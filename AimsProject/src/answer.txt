@@ -1,0 +1,17 @@
+1. Về việc sử dụng Accessor và Mutator (Getters/Setters)
+Câu hỏi: Khi nào nên sử dụng các phương thức accessor (getter)? Tại sao trong bài này chúng ta loại bỏ các hàm setter?
+
+Trong lập trình hướng đối tượng, các phương thức accessor (getter) thường được sử dụng khi ta muốn cho các lớp khác có thể truy cập và đọc giá trị của các thuộc tính bên trong đối tượng, 
+trong khi vẫn giữ được tính đóng gói bằng cách để các thuộc tính ở mức private. 
+Tuy nhiên, trong bài lab này, các phương thức mutator (setter) đã được loại bỏ vì theo yêu cầu nghiệp vụ, thông tin của một đĩa DVD như tiêu đề, giá tiền hay đạo diễn sau khi được khởi tạo thì hầu như không cần thay đổi nữa. Việc không sử dụng setter giúp đảm bảo dữ liệu không bị chỉnh sửa ngoài ý muốn và làm cho hệ thống ổn định hơn.
+
+2. Về nạp chồng Constructor (Constructor Overloading)
+Câu hỏi: Nếu bạn tạo một constructor nhận tham số String title, sau đó tạo thêm một cái nhận String category, Java có cho phép không?
+
+Về nạp chồng constructor, Java không cho phép tạo hai constructor chỉ khác nhau ở tên biến tham số. Ví dụ, nếu một constructor nhận tham số kiểu String là title và một constructor khác cũng nhận một tham số kiểu String là category, thì chương trình sẽ báo lỗi. Nguyên nhân là vì Java phân biệt các constructor dựa trên chữ ký (signature), bao gồm số lượng, kiểu dữ liệu và thứ tự của các tham số, chứ không xét đến tên biến. Trong trường hợp này, cả hai constructor đều có cùng chữ ký là một tham số kiểu String nên sẽ bị trùng lặp.
+
+3. Tóm tắt bài đọc "Why getter and setter methods are evil"
+Nội dung chính: Bài đọc “Why getter and setter methods are evil” nhấn mạnh rằng việc lạm dụng getter và setter có thể làm mất đi ý nghĩa của tính đóng gói trong lập trình hướng đối tượng. Khi sử dụng quá nhiều getter và setter, các thuộc tính private thực chất vẫn bị truy cập từ bên ngoài, khiến cấu trúc bên trong của lớp bị lộ ra. Ngoài ra, điều này còn làm tăng sự phụ thuộc giữa các lớp, khiến cho việc bảo trì và thay đổi code trở nên khó khăn hơn. Bài viết cũng đề cập đến nguyên tắc “Tell, don’t ask”, tức là thay vì lấy dữ liệu từ đối tượng để xử lý bên ngoài, ta nên thiết kế để chính đối tượng đó thực hiện hành động cần thiết thông qua các phương thức của nó.
+
+
+    

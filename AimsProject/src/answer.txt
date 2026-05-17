@@ -1,12 +1,10 @@
-1. Giải thích sự khác biệt về hiệu năng giữa String và StringBuilder (Nhiệm vụ 9):
-• Kết quả quan sát: Khi sử dụng toán tử + trong vòng lặp lớn (65,536 lần), thời gian thực hiện rất lâu (có thể lên tới hàng nghìn ms). Khi sử dụng StringBuilder, thời gian thực hiện cực nhanh (chỉ khoảng vài ms).
-• Giải thích: * Trong Java, đối tượng String là bất biến (immutable). Mỗi khi sử dụng toán tử + để nối chuỗi, Java không sửa trên chuỗi cũ mà tạo ra một đối tượng String mới hoàn toàn trong bộ nhớ (String Pool/Heap). Việc tạo ra hàng chục nghìn đối tượng thừa thãi này làm tiêu tốn bộ nhớ và khiến bộ thu gom rác (Garbage Collector) phải làm việc vất vả, dẫn đến chậm máy.
-• StringBuilder là đối tượng có thể thay đổi (mutable). Nó sử dụng một mảng đệm (buffer) bên trong để thêm các ký tự mới mà không cần tạo đối tượng mới. Do đó, nó cực kỳ tối ưu cho các thao tác nối chuỗi liên tục.
-2. Giải thích cách triển khai thuộc tính ID cho DigitalVideoDisc:
-• Cách làm: Sử dụng một biến static tên là nbDigitalVideoDiscs để đếm tổng số đĩa DVD đã được tạo ra. Trong phương thức khởi tạo (constructor), ta tăng biến này lên 1 và gán giá trị đó cho thuộc tính id (không static) của đối tượng vừa tạo.
-• Ý nghĩa: * Biến static thuộc về lớp (class), dùng chung cho mọi đối tượng.
-• Biến id (instance) thuộc về từng đối tượng riêng lẻ.
-• Cơ chế này đảm bảo mỗi DVD khi được tạo ra sẽ có một mã số định danh (ID) duy nhất và tự động tăng dần.
-3. Sự khác biệt giữa lớp Store và lớp Cart:
-• Cart (Giỏ hàng): Đại diện cho danh sách các sản phẩm mà một khách hàng cụ thể chọn mua. Nó có giới hạn số lượng (thường là 20) và có chức năng tính tổng tiền cho khách hàng đó.
-• Store (Cửa hàng): Đại diện cho kho hàng chung của hệ thống. Nó quản lý tất cả các đĩa DVD có sẵn để bán. Khi một đĩa DVD được thêm vào cửa hàng, nó sẽ tồn tại ở đó cho đến khi quản lý cửa hàng xóa nó đi.
+Câu trả lời cho Mục 12 - So sánh cách tiếp cận bằng Comparable thay vì Comparator:
+1. Lớp nào nên implement interface Comparable? Lớp cha Media là lớp nên implement (triển khai) giao diện Comparable<Media>
+
+2. Trong lớp đó, phương thức compareTo() nên được cài đặt như thế nào để phản ánh đúng thứ tự mong muốn? Bên trong lớp Media, phương thức compareTo(Media other) sẽ được cài đặt logic so sánh để tạo ra một "thứ tự sắp xếp tự nhiên" mặc định
+Ví dụ: ta sử dụng this.getTitle().compareTo(other.getTitle()) để so sánh theo tiêu đề (alphabetical) trước. Nếu tiêu đề giống nhau, ta tiếp tục so sánh thuộc tính giá (cost).
+3. Chúng ta có thể có hai quy tắc sắp xếp khác nhau (theo Tiêu đề rồi đến Giá, VÀ theo Giá rồi đến Tiêu đề) nếu dùng cách tiếp cận Comparable không? Không thể. Giao diện Comparable chỉ cho phép định nghĩa một quy tắc sắp xếp tự nhiên (Natural Ordering) duy nhất vì ta chỉ có thể ghi đè phương thức compareTo() một lần trong lớp
+Để hệ thống có thể linh hoạt chọn giữa hai (hoặc nhiều) quy tắc sắp xếp khác nhau, chúng ta bắt buộc phải sử dụng cách tiếp cận tạo ra các lớp Comparator riêng biệt truyền từ bên ngoài vào
+
+4. Giả sử đĩa DVD có một quy tắc sắp xếp khác biệt (Tiêu đề -> Chiều dài giảm dần -> Giá), mã nguồn sửa đổi thế nào để cho phép điều này? Để làm được điều này, chúng ta sẽ ghi đè (override) lại phương thức compareTo() bên trong lớp con DigitalVideoDisc
+Cụ thể: Trong phương thức này, ta kiểm tra đối tượng truyền vào. Nếu đối tượng đó cũng là một đĩa DVD, ta tiến hành logic so sánh đặc thù (tiêu đề -> độ dài giảm dần -> giá). Nếu đối tượng không phải DVD, ta có thể gọi ngược về logic mặc định của lớp cha bằng lệnh super.compareTo(other).

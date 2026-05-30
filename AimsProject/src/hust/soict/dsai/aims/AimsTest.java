@@ -2,6 +2,7 @@ package hust.soict.dsai.aims;
 
 import hust.soict.dsai.aims.media.*;
 import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.exception.PlayerException; // Nhớ import lớp Exception của bạn
 
 public class AimsTest {
     public static void main(String[] args) {
@@ -30,10 +31,17 @@ public class AimsTest {
             if (m != null) {
                 System.out.println(m.toString());
                 
-                // 5. Kiểm tra interface Playable
+                // 5. Kiểm tra interface Playable (ĐÃ ĐƯỢC CẬP NHẬT TRY-CATCH)
                 if (m instanceof Playable) {
                     System.out.print("Dang phat: ");
-                    ((Playable) m).play();
+                    try {
+                        // Gọi hàm play, nếu có lỗi (độ dài <= 0), nó sẽ ném ra PlayerException
+                        ((Playable) m).play();
+                    } catch (PlayerException e) {
+                        // Bắt và in ra thông báo lỗi ngoại lệ 
+                        System.err.println(e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
                 System.out.println("-------------------");
             }

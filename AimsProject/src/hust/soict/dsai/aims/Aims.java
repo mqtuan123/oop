@@ -2,6 +2,7 @@ package hust.soict.dsai.aims;
 
 import hust.soict.dsai.aims.media.*;
 import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.exception.PlayerException;
 import hust.soict.dsai.aims.store.Store;
 import java.util.Scanner;
 import java.util.Collections;
@@ -168,7 +169,11 @@ public class Aims {
         String title = scanner.nextLine();
         for (Media m : store.getItemsInStore()) {
             if (m.getTitle().equalsIgnoreCase(title) && m instanceof Playable) {
-                ((Playable) m).play();
+                try {
+                      ((Playable) m).play();
+                           } catch (PlayerException e) {
+                                System.out.println("ERROR: " + e.getMessage());
+                             }
                 return;
             }
         }
@@ -249,7 +254,11 @@ public class Aims {
         String title = scanner.nextLine();
         for (Media m : cart.getItemsOrdered()) {
             if (m.getTitle().equalsIgnoreCase(title) && m instanceof Playable) {
-                ((Playable) m).play();
+                try {
+                     ((Playable) m).play();
+                            } catch (PlayerException e) {
+                                  System.out.println("ERROR: " + e.getMessage());
+                             }
                 return;
             }
         }

@@ -1,10 +1,20 @@
-Câu trả lời cho Mục 12 - So sánh cách tiếp cận bằng Comparable thay vì Comparator:
-1. Lớp nào nên implement interface Comparable? Lớp cha Media là lớp nên implement (triển khai) giao diện Comparable<Media>
+1. Câu hỏi Mục 1.3: So sánh các phần tử của Swing và AWT
+Câu hỏi: Lập trình với AWT và Swing khá giống nhau, tuy nhiên có một số điểm khác biệt mà bạn cần lưu ý: Các container cấp cao nhất (top-level containers) trong Swing và AWT là gì? Tên lớp của các thành phần (components) trong AWT và tên lớp tương ứng trong Swing khác nhau thế nào?
+.
 
-2. Trong lớp đó, phương thức compareTo() nên được cài đặt như thế nào để phản ánh đúng thứ tự mong muốn? Bên trong lớp Media, phương thức compareTo(Media other) sẽ được cài đặt logic so sánh để tạo ra một "thứ tự sắp xếp tự nhiên" mặc định
-Ví dụ: ta sử dụng this.getTitle().compareTo(other.getTitle()) để so sánh theo tiêu đề (alphabetical) trước. Nếu tiêu đề giống nhau, ta tiếp tục so sánh thuộc tính giá (cost).
-3. Chúng ta có thể có hai quy tắc sắp xếp khác nhau (theo Tiêu đề rồi đến Giá, VÀ theo Giá rồi đến Tiêu đề) nếu dùng cách tiếp cận Comparable không? Không thể. Giao diện Comparable chỉ cho phép định nghĩa một quy tắc sắp xếp tự nhiên (Natural Ordering) duy nhất vì ta chỉ có thể ghi đè phương thức compareTo() một lần trong lớp
-Để hệ thống có thể linh hoạt chọn giữa hai (hoặc nhiều) quy tắc sắp xếp khác nhau, chúng ta bắt buộc phải sử dụng cách tiếp cận tạo ra các lớp Comparator riêng biệt truyền từ bên ngoài vào
+Về Top-level containers: Trong AWT, container cấp cao nhất là Frame và các thành phần được thêm trực tiếp vào Frame
+. Trong Swing, container cấp cao nhất là JFrame
+, tuy nhiên các thành phần nhẹ (lightweight components) của Swing không được thêm trực tiếp vào JFrame mà bắt buộc phải thêm vào một lớp trung gian gọi là content-pane (thông qua hàm getContentPane())
+.
+Về cách đặt tên lớp (Class name): Các thành phần của AWT có tên thông thường như TextField, Label, Button
+. Trong khi đó, các thành phần tương ứng của Swing được bắt đầu bằng chữ "J" (đại diện cho JComponent), ví dụ: JTextField, JLabel, JButton
+.
+2. Câu hỏi Mục 14: Cập nhật lớp Aims với Exception
+Câu hỏi: Lớp Aims phải được cập nhật để xử lý (handle) mọi ngoại lệ (exceptions) sinh ra khi phương thức play() được gọi. Chuyện gì sẽ xảy ra nếu bạn không cập nhật để bắt (catch) các ngoại lệ này? ("What happens when you don’t update for them to catch?")
+.
 
-4. Giả sử đĩa DVD có một quy tắc sắp xếp khác biệt (Tiêu đề -> Chiều dài giảm dần -> Giá), mã nguồn sửa đổi thế nào để cho phép điều này? Để làm được điều này, chúng ta sẽ ghi đè (override) lại phương thức compareTo() bên trong lớp con DigitalVideoDisc
-Cụ thể: Trong phương thức này, ta kiểm tra đối tượng truyền vào. Nếu đối tượng đó cũng là một đĩa DVD, ta tiến hành logic so sánh đặc thù (tiêu đề -> độ dài giảm dần -> giá). Nếu đối tượng không phải DVD, ta có thể gọi ngược về logic mặc định của lớp cha bằng lệnh super.compareTo(other).
+Như chúng ta đã gặp lỗi ở cuộc hội thoại trước, vì PlayerException là một ngoại lệ do người dùng tự định nghĩa kế thừa từ lớp java.lang.Exception
+ (thuộc loại checked exception), nên trình biên dịch của Java bắt buộc mã nguồn phải xử lý nó.
+Nếu bạn không cập nhật mã để bắt ngoại lệ này bằng khối try-catch (hoặc đẩy nó lên bằng từ khóa throws), trình biên dịch sẽ báo lỗi (Unhandled exception type PlayerException) và chương trình sẽ không thể biên dịch hay chạy được
+. Trong trường hợp nếu nó là runtime exception mà không được bắt, chương trình sẽ bị ngưng trệ (crash) đột ngột khi một đĩa CD/DVD có thời lượng không hợp lệ (<= 0) được phát
+.
